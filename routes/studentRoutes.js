@@ -1,4 +1,4 @@
-const { get_all_student, create_Student, get_student_by_id, update_student, delete_Student, get_student_enrolled_courses_in_class } = require("../controllers/studentController");
+const { get_all_student, create_Student, get_student_by_id, update_student, delete_Student, get_student_enrolled_courses_in_class, search_students } = require("../controllers/studentController");
 
 
 const router = require("express").Router();
@@ -24,6 +24,10 @@ router.delete("/student/:studentId", async (req, res) => {
 });
 router.get("/student/:studentId/class/:classId/course", async (req, res) => {
  get_student_enrolled_courses_in_class(req, res);
+});
+
+router.get("/students", async (req, res) => {
+  search_students(req, res);
 });
 
 module.exports = router;

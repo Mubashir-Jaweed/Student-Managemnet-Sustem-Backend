@@ -108,3 +108,29 @@ module.exports.get_student_enrolled_courses_in_class = async (req, res) => {
     return res.status(400).json({ mes: `Error : ${error}` });
   }
 };
+
+
+
+
+
+module.exports.search_students = async (req, res) => {
+  try {
+    const { search, page = 1, size = 10 } = req.query;
+    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+
+    const students = await Student.find(query)
+      .skip((page - 1) * size)
+      .limit(parseInt(size));
+
+    const total = await Student.countDocuments(query);
+
+    return res.status(200).json({
+      total,
+      page: parseInt(page),
+      size: parseInt(size),
+      students,
+    });
+  } catch (error) {
+    return res.status(400).json({ message: `Error: ${error}` });
+  }
+};

@@ -4,6 +4,7 @@ const {
   get_course_by_id,
   update_course,
   delete_course,
+  search_courses,
 } = require("../controllers/courseController");
 
 
@@ -27,6 +28,10 @@ router.put("/course/:courseId", async (req, res) => {
 
 router.delete("/course/:courseId", async (req, res) => {
   delete_course(req, res);
+});
+
+router.get("/courses", async (req, res) => {
+  search_courses(req, res);
 });
 
 module.exports = router;

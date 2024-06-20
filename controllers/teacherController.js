@@ -81,3 +81,27 @@ module.exports.delete_teacher = async (req, res) => {
     return res.status(400).json({ mes: `Error : ${error}` });
   }
 };
+
+
+
+module.exports.search_teachers = async (req, res) => {
+  try {
+    const { search, page = 1, size = 10 } = req.query;
+    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+
+    const teachers = await Teacher.find(query)
+      .skip((page - 1) * size)
+      .limit(parseInt(size));
+
+    const total = await Teacher.countDocuments(query);
+
+    return res.status(200).json({
+      total,
+      page: parseInt(page),
+      size: parseInt(size),
+      teachers,
+    });
+  } catch (error) {
+    return res.status(400).json({ message: `Error: ${error}` });
+  }
+};

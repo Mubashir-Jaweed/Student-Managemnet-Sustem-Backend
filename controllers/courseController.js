@@ -82,3 +82,26 @@ module.exports.delete_course= async (req, res) => {
     return res.status(400).json({ mes: `Error : ${error}` });
   }
 };
+
+
+module.exports.search_courses = async (req, res) => {
+  try {
+    const { search, page = 1, size = 10 } = req.query;
+    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+
+    const courses = await Course.find(query)
+      .skip((page - 1) * size)
+      .limit(parseInt(size));
+
+    const total = await Course.countDocuments(query);
+
+    return res.status(200).json({
+      total,
+      page: parseInt(page),
+      size: parseInt(size),
+      courses,
+    });
+  } catch (error) {
+    return res.status(400).json({ message: `Error: ${error}` });
+  }
+};

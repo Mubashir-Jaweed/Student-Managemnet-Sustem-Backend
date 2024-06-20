@@ -1,4 +1,4 @@
-const { get_all_teacher, create_teacher, get_teacher_by_id, update_teacher, delete_teacher } = require('../controllers/teacherController');
+const { get_all_teacher, create_teacher, get_teacher_by_id, update_teacher, delete_teacher, search_teachers } = require('../controllers/teacherController');
 
 const router = require('express').Router();
 
@@ -21,6 +21,10 @@ router.put('/teacher/:teacherId', async (req,res)=>{
 
 router.delete('/teacher/:teacherId', async (req,res)=>{
     delete_teacher(req, res);
+});
+
+router.get('/teachers', async (req,res)=>{
+    search_teachers(req, res);
 });
 
 
